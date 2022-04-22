@@ -18,7 +18,7 @@ time.sleep(15)
 createTSBbutton=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div[1]/div[2]/button')
 createTSBbutton.click()
 
-idname='Test-TSB-'+str(random.randrange(100,999,1)) 
+idname='Test--TSBs-'+str(random.randrange(100,999,1)) 
 
 time.sleep(8)
 idBox=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div[1]/input')
