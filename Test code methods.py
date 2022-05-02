@@ -45,20 +45,23 @@ class A:
         self.x = x
         self.y = y
 
+
     def operate(self):
         return self.x * self.y
 
 
 class Ba(A):
-    def __init__(self,x,y):
+    def __init__(self,x,y,z):
         super().__init__(x,y)
+        self.z = z
+
+    def newoperate(self):
+        return self.operate() + self.z
 
 
+j = Ba(3,4,5)
 
-
-j = Ba(3,4)
-
-print(j.operate())
+print(j.newoperate())
 
 
 
