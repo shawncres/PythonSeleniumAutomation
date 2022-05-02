@@ -50,13 +50,13 @@ class A:
 
 
 class Ba(A):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,x,y):
+        super().__init__(x,y)
 
 
 
 
-j = Ba(30, 50)
+j = Ba(3,4)
 
 print(j.operate())
 
