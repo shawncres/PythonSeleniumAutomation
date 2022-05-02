@@ -128,8 +128,10 @@ class human:
 
 class child(human):
     def __init__(self):
-        super().__init__()
+        super().__init__()        
         print('I am a child')
+        self.height = self.height /2
+        self.weight = self.weight /2
 
 
 
