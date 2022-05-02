@@ -6,7 +6,7 @@ import time
 import unittest
 import selenium
 import random
-
+import warnings
 
 GUID=input('Enter Ant UID:')
 
@@ -21,7 +21,9 @@ class TestAntCreation(unittest.TestCase):
         partLists.append(partLists[4])
 
         driver = webdriver.Edge()
+        driver.implicitly_wait(10)
         driver.get("https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+        warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
         time.sleep(3)
         RINfield = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[1]/div/div[1]')
@@ -125,7 +127,7 @@ class TestAntCreation(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
 
 
 

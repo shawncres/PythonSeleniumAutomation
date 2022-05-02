@@ -3,15 +3,18 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 import unittest
+import warnings
 
 driver = webdriver.Edge()
-driver.get("https://attabotics-hivemind-test.azurewebsites.net/")
-time.sleep(5)
+driver.implicitly_wait(10)
+warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
+
 
 class TestAntCreation(unittest.TestCase):
 
     def test_create(self):
-        
+            driver.get("https://attabotics-hivemind-test.azurewebsites.net/")
+            time.sleep(5)    
         
             ham = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[2]/div[1]/button')
             ham.click()
@@ -51,7 +54,7 @@ class TestAntCreation(unittest.TestCase):
             radioID = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[4]/div[1]/input')
             radioID.send_keys('900 mhz')
 
-            time.sleep(2)
+            time.sleep(5)
             saveAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
             saveAnt.click()
             
@@ -73,7 +76,7 @@ class TestAntCreation(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
 
 ## copy pasting using action chains
 ##

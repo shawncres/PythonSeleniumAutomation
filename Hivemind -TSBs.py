@@ -7,67 +7,88 @@ import time
 import unittest
 import selenium
 import random
+import warnings
 
-options = Options()
-options.add_argument("headless")
-
-driver = webdriver.Edge()
-driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/bulletins")
-
-time.sleep(15)
-createTSBbutton=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div[1]/div[2]/button')
-createTSBbutton.click()
+class TestTSBcreation(unittest.TestCase):
+    
+        def test_create(self):
 
 
-idname='Test-TSBs-'+str(random.randrange(100,999,1)) 
+##            options = Options()
+##            options.add_argument("headless")
 
-time.sleep(8)
-idBox=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div[1]/input')
-idBox.send_keys(idname)
-
-linkBox=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div[2]/input')
-linkBox.send_keys('https://attabotics.sharepoint.com/:u:/s/SoftwareQATeam/ETMkBqusyUBMswCwrgOLRugBCm8UaR8wn51iP3G2GyeEYA?e=eHETYk')                
-
-
-entityType=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/input')
-entityType.click()
-
-time.sleep(3)
-capbank=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/div[2]/div[4]')
-capbank.click()
-
-
-
-
-##dueDate=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[33]')
-##dueDate.send_keys('2022-04-21 12:00')
-##dueDate.click()
-
-cal=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[2]/input[2]')
-cal.click()
-time.sleep(3)
-today=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[35]')
-today.click()
-
-randomPriorityvalue='/html/body/div[2]/div/div[2]/div/form/div[2]/div[3]/div/div[{0}]/div/input'.format(str(random.randrange(1,3,1)))
-
-priorityMed=driver.find_element(by=By.XPATH, value=randomPriorityvalue)
-priorityMed.click()
+            driver = webdriver.Edge()
+            driver.implicitly_wait(10)
+            driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/bulletins")
+            warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)    
                 
-saveTSB=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
-saveTSB.click()
+            time.sleep(15)
+            createTSBbutton=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div[1]/div[2]/button')
+            createTSBbutton.click()
+
+            idname='Test--TSBs-'+str(random.randrange(100,999,1)) 
+
+            time.sleep(8)
+            idBox=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div[1]/input')
+            idBox.send_keys(idname)
+
+            linkBox=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div[2]/input')
+            linkBox.send_keys('https://attabotics.sharepoint.com/:u:/s/SoftwareQATeam/ETMkBqusyUBMswCwrgOLRugBCm8UaR8wn51iP3G2GyeEYA?e=eHETYk')                
+
+            
+            entityType=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/input')
+            entityType.click()
 
 
-time.sleep(15)
-
-if idname in driver.page_source:
-    print('TSB created successfully')
-else:
-    print('TSB not found')
-##
-##
-##sortDate=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[2]/div[3]/div/table/thead/tr/th[5]/a/span')
-##sortDate.click()
-##time.sleep(4)
+            time.sleep(3)
+            
+            entityrand= f'/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/div[2]/div[{str(random.randrange(1,10,1))}]'
+            capbank=driver.find_element(by=By.XPATH, value=entityrand)
+            capbank.click()
 
 
+
+
+            ##dueDate=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[33]')
+            ##dueDate.send_keys('2022-04-21 12:00')
+            ##dueDate.click()
+
+            cal=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[2]/input[2]')
+            cal.click()
+            time.sleep(3)
+            today=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[35]')
+            today.click()
+
+            randomPriorityvalue='/html/body/div[2]/div/div[2]/div/form/div[2]/div[3]/div/div[{0}]/div/input'.format(str(random.randrange(1,4,1)))
+            priority=driver.find_element(by=By.XPATH, value=randomPriorityvalue)
+            priority.click()
+
+            randomMandatoryValue='/html/body/div[2]/div/div[2]/div/form/div[2]/div[4]/div/div[{0}]/div/input'.format(str(random.randrange(1,3,1)))
+            Mandatory=driver.find_element(by=By.XPATH, value=randomMandatoryValue)
+            Mandatory.click()    
+
+
+
+                            
+            saveTSB=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
+            saveTSB.click()
+
+
+            time.sleep(15)
+            self.assertTrue(idname in driver.page_source)
+            if idname in driver.page_source:
+                print('TSB created successfully')
+            else:
+                print('TSB not found')
+
+            
+                
+                
+            ##
+            ##
+            ##sortDate=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[2]/div[3]/div/table/thead/tr/th[5]/a/span')
+            ##sortDate.click()
+            ##time.sleep(4)
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
