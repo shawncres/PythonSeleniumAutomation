@@ -65,7 +65,7 @@ class TestAntCreation(unittest.TestCase):
             driver.get('{0}'.format(antassemblypage))
 
                 
-            time.sleep(4)
+            time.sleep(6)
                         
             if GUID in driver.page_source:
                 print('Ant created successfully GUID is {0}'.format(GUID))
@@ -73,7 +73,7 @@ class TestAntCreation(unittest.TestCase):
                 print('Ant not found')
             self.assertTrue(GUID in driver.page_source)
 
-
+            driver.close()
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
