@@ -1,0 +1,77 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+import time
+import unittest
+import selenium
+import random
+import warnings
+
+
+
+driver = webdriver.Edge()
+driver.implicitly_wait(10)
+
+
+
+driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/softwre_releases")
+
+
+
+##
+##name = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[1]').text
+##driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[1]').click()
+
+entities = range(1,7,1)
+for i in entities:
+    time.sleep(2)
+    driver.find_element(by=By.CSS_SELECTOR, value='#application > div.pusher > div > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(1) > div > button').click()
+    time.sleep(2)
+    driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div.four.fields > div:nth-child(3) > div > i').click()
+    time.sleep(2)     
+    selection = f'/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[{i}]'
+    name = driver.find_element(by=By.XPATH, value=selection).text
+    driver.find_element(by=By.XPATH, value=selection).click()
+    nameField = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[1]/input')
+    nameFieldVers = name+'Vers'+'-'+'1.'+str(random.randrange(1,9,1))+'.'+str(random.randrange(1,9,1))+'.'+ str(random.randrange(1,9,1))
+    nameField.send_keys(nameFieldVers)
+    driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div.four.fields > div:nth-child(4) > div > i').click()
+    time.sleep(2)
+    driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[4]/div/div[2]/div[3]').click()
+    
+
+    time.sleep(2)
+##    driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div > div > div > i').click()
+##    driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[3]/div/div[2]/div/div/div/div/div[2]/div[1]').click()
+
+
+
+    robotRange = range(1,10,1)
+
+    for i in robotRange:
+        try:
+            time.sleep(2)
+            FieldVers = '1.'+str(random.randrange(0,9,1))+'.'+str(random.randrange(1,9,1))+'.'+ str(random.randrange(1,9,1))
+            Field = f'/html/body/div[2]/div/div[2]/form/div[3]/div/div[2]/div/div[{i}]/div/input'
+            driver.find_element(by=By.XPATH, value=Field).send_keys(FieldVers)
+        except NoSuchElementException:
+            try:
+                driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div:nth-child(1) > div > div > i').click()
+                driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[3]/div/div[2]/div/div/div/div/div[2]/div[1]').click()
+                driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div:nth-child(1) > div > div > i').click()
+            except NoSuchElementException:
+                break
+
+    time.sleep(2)
+    driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.actions > button.ui.positive.button').click()
+    time.sleep(4)
+
+
+
+
+    
+
+    
+    
+
