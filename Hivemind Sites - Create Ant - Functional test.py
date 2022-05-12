@@ -35,11 +35,11 @@ class TestAntCreation(unittest.TestCase):
 
             time.sleep(3)
 
-            hwvers = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div/input')
+            hwvers = driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > i')
             hwvers.click()
 
             time.sleep(3)
-            hwvers51 = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div/div/div[8]')
+            hwvers51 = driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > div > div:nth-child(8)')
             hwvers51.click()
 
             RINgen = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[3]/div/button')
