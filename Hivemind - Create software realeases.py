@@ -7,6 +7,7 @@ import unittest
 import selenium
 import random
 import warnings
+from Locators import srr_locators
 
 
 
@@ -22,7 +23,7 @@ driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/sof
 ##
 ##name = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[1]').text
 ##driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[1]').click()
-
+swrnames=[]
 entities = range(1,7,1)
 for i in entities:
     time.sleep(2)
@@ -33,8 +34,9 @@ for i in entities:
     selection = f'/html/body/div[2]/div/div[2]/form/div[1]/div[3]/div/div[2]/div[{i}]'
     name = driver.find_element(by=By.XPATH, value=selection).text
     driver.find_element(by=By.XPATH, value=selection).click()
-    nameField = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[1]/div[1]/input')
+    nameField = driver.find_element(by=By.XPATH, value=srr_locators.srr_Name)
     nameFieldVers = name+'Vers'+'-'+'1.'+str(random.randrange(1,9,1))+'.'+str(random.randrange(1,9,1))+'.'+ str(random.randrange(1,9,1))
+    swrnames.append(nameFieldVers)
     nameField.send_keys(nameFieldVers)
     driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div.four.fields > div:nth-child(4) > div > i').click()
     time.sleep(2)
@@ -68,8 +70,20 @@ for i in entities:
     time.sleep(4)
 
 
+driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/softwre_releases")
+time.sleep(6)
+for i in swrnames:
+    if i in driver.page_source:
+        print(f'{i} created succussfully!')
+    else:
+        pass
+    
+    
 
 
+    
+    
+    
     
 
     

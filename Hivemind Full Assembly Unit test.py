@@ -8,7 +8,7 @@ import selenium
 import random
 import warnings
 
-GUID=input('Enter Ant UID:')
+GUID=input('Enter Ant GUID:')
 
 class TestAntCreation(unittest.TestCase):
 
@@ -66,18 +66,20 @@ class TestAntCreation(unittest.TestCase):
 
             for i in serialList:
                 if serialList[0] != i:
-                    time.sleep(5)
-                    snfield1 = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input')
-                    snfield1.send_keys(serialList[0])
-                    time.sleep(3)
-                    snfield2 = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
-                    snfield2.send_keys(i)
-                    time.sleep(4)
-                    parentButton = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
-                    parentButton.click()
-                    time.sleep(5)
-                    driver.get("https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/parent_serial_number")
-
+                    try:                        
+                        time.sleep(5)
+                        snfield1 = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input')
+                        snfield1.send_keys(serialList[0])
+                        time.sleep(3)
+                        snfield2 = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
+                        snfield2.send_keys(i)
+                        time.sleep(5)
+                        parentButton = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
+                        parentButton.click()
+                        time.sleep(5)
+                        driver.get("https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/parent_serial_number")
+                    except:
+                        continue
 
 
             ## CheckList and Final attaching logic of the Subassembly to the Ant Can this be combined with the above step or should this be completed as a final sequence once 
@@ -98,6 +100,12 @@ class TestAntCreation(unittest.TestCase):
             try:
                 cbsave= driver.find_element(by=By.CSS_SELECTOR, value='#application > div.pusher > div > div:nth-child(1) > div > div > div:nth-child(3) > div.ui.bottom.attached.tab.segment.active > div > div > div.six.wide.column > div > button')
                 cbsave.click()
+                time.sleep(3)
+                cbcomission= driver.find_element(by=By.CSS_SELECTOR, value='#application > div.pusher > div > div:nth-child(1) > div > div > div.ui.internally.celled.top.aligned.very.compact.grid > div:nth-child(1) > div.eight.wide.right.floated.right.aligned.column > span.ui.fluid > button')
+                cbcomission.click()
+                time.sleep(3)
+                driver.switch_to.alert.accept()
+                time.sleep(2)
             except NoSuchElementException:
                 print('QA checklist not required for this Subassembly')
                 pass
@@ -116,7 +124,11 @@ class TestAntCreation(unittest.TestCase):
             serialList=[]
             
 
-            
+        time.sleep(4)
+        driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/ants/{0}#comm".format(GUID))
+        time.sleep(3)
+        markInComission = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[2]/div/button[4]')
+        markInComission.click()            
         time.sleep(3)
         driver.get("https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/{0}#heirarchy".format(GUID))
         time.sleep(3)
@@ -124,7 +136,7 @@ class TestAntCreation(unittest.TestCase):
         print(serialzerovalidation.text[:1])
         self.assertEqual(serialzerovalidation.text[:1],'0','All Sub-assemblies not attached!')
         print('Ant fully assembled successfully!')
-
+                
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

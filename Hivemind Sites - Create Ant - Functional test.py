@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import time
 import unittest
 import warnings
+import random
 
 driver = webdriver.Edge()
 driver.implicitly_wait(10)
@@ -50,9 +51,10 @@ class TestAntCreation(unittest.TestCase):
             GUID = GUIDfield.get_attribute('value')
             print(GUID)
 
-
+            ## 0008:4186a798
             radioID = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[4]/div[1]/input')
-            radioID.send_keys('900 mhz')
+            randomRadioID = str(random.randrange(1000,9999,1))+ ':'+ str(random.randrange(1000,9999,1)) + random.choice(['a','b','v','x'])+ str(random.randrange(111,999,1)) 
+            radioID.send_keys(randomRadioID)
 
             time.sleep(5)
             saveAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
