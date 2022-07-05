@@ -105,7 +105,6 @@ class TestAntCreation(unittest.TestCase):
                 cbcomission.click()
                 time.sleep(3)
                 driver.switch_to.alert.accept()
-                time.sleep(2)
             except NoSuchElementException:
                 print('QA checklist not required for this Subassembly')
                 pass
