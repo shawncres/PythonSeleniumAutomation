@@ -13,17 +13,20 @@ from Locators_HM import assemblies_locators
 from Locators_HM import ri_locators
 
 def setupRI():
+    '''Initiates selenium and pulls up the Robot Identification page'''
     global driver
     driver = webdriver.Edge()
     driver.implicitly_wait(10)
     warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
 def setRIN():
+    '''Asks for RIN to be used in Ant creation throughout the test'''
     global RIN
     RIN = input('What is the Ants friendly name?: ').strip().upper()
     print(RIN)
 
 def getGUID():
+    '''Uses preset RIN to extract the GUID to be used in later parenting logic'''
     global GUID
     driver.get(ri_locators.ri_page)
     time.sleep(3)
@@ -35,14 +38,17 @@ def getGUID():
     
 
 def setWO():
+    '''Generates s random Work Oder ID to be used for Assemblies and stores it'''
     global randomWOID
     randomWOID = 'WO' + str(random.randrange(100000,999999,1))    
     print(randomWOID)
 
 def assignWO():
+    '''Uses the pre-set WO for use in the serialization page'''
     driver.find_element(by=By.XPATH, value=assemblies_locators.WOnumber).send_keys(randomWOID)
 
 def partlist52():
+    ''' Ant partlist to be used for 5.2 ants specifically for use in serialization and parenting logic'''
     global partLists
     partLists = [['149269', '142135', '149816', '152881', '152585', '150705', '145135'],
                      ['149278', '146530', '149818'], ['149272', '149818', '146228'],
@@ -53,6 +59,7 @@ def partlist52():
     
 
 def serialization():
+    '''Serializes all the parts from the provided Partlist and created a nestled serial list for use in parenting'''
     global serialLists
     serialLists = []
     for partList in partLists:
@@ -73,12 +80,14 @@ def serialization():
     print(serialLists)
 
 def serialscount():
+    '''Validates the number of parts that were serialized'''
     x = 0
     for i in serialLists:
         x += len(i)
     print(f'{x} parts have been serialized')
 
 def parentingSA():
+    '''Assembles all the subassemblies using the serial lists that was previously generated'''
     driver.get(assemblies_locators.parent_page)
     time.sleep(3)
     for serialList in serialLists:
@@ -103,7 +112,8 @@ def parentingSA():
 
 
             ## CheckList and Final attaching logic of the Subassembly to the Ant Can this be combined with the above step or should this be completed as a final sequence once
-def checklists():    
+def checklists():
+    '''When on a subassembly page or on the Ant page this command completes and saves checklist if applicable'''
     try:        
         cb = driver.find_elements(by=By.CSS_SELECTOR, value='input[type=checkbox]')
         for i in cb:
@@ -184,7 +194,7 @@ def finalization():
     serialzerovalidation = driver.find_element(by=By.XPATH,
                                                value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div[2]/div[1]/div[2]/div')
     print(serialzerovalidation.text[:1])
-##    self.assertEqual(serialzerovalidation.text[:1], '0', 'All Sub-assemblies not attached!')
+    self.assertEqual(serialzerovalidation.text[:1], '0', 'All Sub-assemblies not attached!')
     print('Ant fully assembled successfully!')
 
 
