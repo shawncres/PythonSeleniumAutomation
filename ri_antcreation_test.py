@@ -2,11 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 import time
 import unittest
 import warnings
 import random
 import warnings
+from Locators_RI import ri_locators
 
 driver = webdriver.Edge()
 driver.implicitly_wait(10)
@@ -15,74 +17,67 @@ warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWa
 GUID = ''
 
 class TestAntCreation(unittest.TestCase):
-
-    def test_1_create(self):
-            '''Accesses Hivemind, Creates Ant, and returns GUID as global variable.'''
-            driver.get("https://attabotics-hivemind-test.azurewebsites.net/")
-            time.sleep(5)    
+    
+    def test_1(self):
         
-            ham = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[2]/div[1]/button')
-            ham.click()
 
-            time.sleep(2)
+        driver.get(ri_locators.ri_page)
+        randomWOID = 'WO' + str(random.randrange(100000,999999,1))
 
-            comAnts = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[1]/div[3]/div[2]/a[4]')
-            comAnts.click()
-
-            time.sleep(3)
-            createAnt = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div[1]/div[1]/div/button')
-            createAnt.click()
-
-
-            time.sleep(3)
-            guidAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div/button')
-            guidAnt.click()
-
-            time.sleep(3)
-
-            hwvers = driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > i')
-            hwvers.click()
-
-            time.sleep(3)
-            hwvers52 = driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > div > div:nth-child(9)')
-            hwvers52.click()
-
-            RINgen = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[3]/div/button')
-            RINgen.click()
-
-            GUIDfield = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div/input')
-            global GUID 
-            GUID = GUIDfield.get_attribute('value')
-            print(GUID)
-
-            ## 0008:4186a798
-            radioID = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[4]/div[1]/input')
-            randomRadioID = str(random.randrange(1000,9999,1))+ ':'+ str(random.randrange(1000,9999,1)) + random.choice(['a','b','v','x'])+ str(random.randrange(111,999,1)) 
-            radioID.send_keys(randomRadioID)
-
-            time.sleep(5)
-            saveAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
-            saveAnt.click()
+        time.sleep(3)
+        if randomWOID in driver.page_source:
+            randomWOID = 'WO' + str(random.randrange(100000,999999,1))
+        else:
+            randomWOID == randomWOID
             
+        driver.find_element(by = By.XPATH, value=ri_locators.create).click()
 
-            time.sleep(4)
-            antassemblypage= 'https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/'+GUID+'#heirarchy'
-
-            driver.get('{0}'.format(antassemblypage))
-
-                
-            time.sleep(10)
-                        
-            if GUID in driver.page_source:
-                print('Ant created successfully GUID is {0}'.format(GUID))
-            else:
-                print('Ant not found')
-            self.assertTrue(GUID in driver.page_source)
-
-            driver.close()
+        driver.find_element(by = By.XPATH, value=ri_locators.generate).click()
+        global GUID 
+        GUID = driver.find_element(by=By.XPATH, value=ri_locators.GUIDfield).get_attribute('value')
+        print(GUID)
 
 
-    def test_2_assemble(self):
+        driver.find_element(by=By.CSS_SELECTOR, value=ri_locators.GeneralAssembly).click()
+        time.sleep(3)
+        driver.find_element(by=By.XPATH, value=ri_locators.ant5_2).click()
+
+        driver.find_element(by = By.XPATH, value=ri_locators.RINgenerate).click()
+
+        print(randomWOID)
+        driver.find_element(by=By.XPATH, value=ri_locators.WOnumberfld).send_keys(randomWOID)
+
+
+        randomRadioID = str(random.randrange(1000,9999,1))+ ':'+ str(random.randrange(1000,9999,1)) + random.choice(['a','b','v','x'])+ str(random.randrange(111,999,1)) 
+        driver.find_element(by=By.XPATH, value=ri_locators.radioID).send_keys(randomRadioID)
+
+        time.sleep(3)
+        driver.find_element(by = By.XPATH, value=ri_locators.saveRI).click()
+
+        time.sleep(3)
+
+        if GUID in driver.page_source:
+            print('Robot Identity successfully created')    
+        else:
+            print('Creation of Robot Failed')
+            
+        self.assertTrue(GUID in driver.page_source)    
+            
+        time.sleep(3)
+        driver.find_element(by = By.XPATH, value=ri_locators.searchbox).send_keys(GUID)
+        driver.find_element(by = By.XPATH, value=ri_locators.searchBtn).click()
+        time.sleep(3)
+        driver.find_element(by = By.XPATH, value=ri_locators.viewassemblyBtn).click()
+        ##driver.close()
+
+        time.sleep(3)
+        RINfield = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[1]/div/div[1]')
+        RIN = RINfield.text
+
+        print(RIN)
+        driver.close()
+
+    def assembly_2(self):
         '''Takes Global GUID from prior test, serializes and assembles all subassemblies.'''
         partLists=[['149269', '142135', '149816', '152881', '152585', '150705', '145135'], ['149278', '146530', '149818'], ['149272', '149818', '146228'], ['149270', '149820', '152395', '152395', '146445', '146445', '145133', '149683'], ['149271', '149820', '152395', '152395', '146445', '146445']]
         partLists.append(partLists[3])
@@ -209,5 +204,6 @@ class TestAntCreation(unittest.TestCase):
 
 
 
+
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main()
