@@ -72,6 +72,7 @@ def serialization():
             driver.find_element(by=By.XPATH, value=assemblies_locators.serial_number).send_keys(serialNumber)
             time.sleep(2)
             assignWO()
+            time.sleep(1)
             driver.find_element(by=By.XPATH, value=assemblies_locators.assign_but).click()
             serialList.append(serialNumber)
             time.sleep(2)
@@ -191,12 +192,14 @@ def finalization():
     driver.get(
         "https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/{0}#heirarchy".format(GUID))
     time.sleep(3)
+    global serialzerovalidation
     serialzerovalidation = driver.find_element(by=By.XPATH,
                                                value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div[2]/div[1]/div[2]/div')
     print(serialzerovalidation.text[:1])
     self.assertEqual(serialzerovalidation.text[:1], '0', 'All Sub-assemblies not attached!')
     print('Ant fully assembled successfully!')
-
+    time.sleep(3)
+    driver.close()
 
 
 

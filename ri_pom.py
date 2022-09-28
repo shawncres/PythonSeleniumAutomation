@@ -8,6 +8,7 @@ import unittest
 import warnings
 import random
 import warnings
+import qrcode
 from Locators_HM import ri_locators
 
 
@@ -28,6 +29,10 @@ def checkWO():
     else:
         randomWOID == randomWOID
     print(randomWOID)
+
+def woQR():
+    global randomWOID
+    qrcode.run_example(data=randomWOID)
 
 def createRI():
     driver.find_element(by = By.XPATH, value=ri_locators.create).click()
@@ -75,7 +80,7 @@ def save_ri():
     time.sleep(3)
     driver.find_element(by = By.XPATH, value=ri_locators.saveRI).click()
     time.sleep(3)
-    if GUID in driver.page_source and randomWOID in driver.page_source:
+    if GUID in driver.page_source:
         print('Robot Identity successfully created')    
     else:
         print('Creation of Robot Failed')
@@ -91,6 +96,10 @@ def checkRIN():
     global RIN
     RIN = RINfield.text
     print(RIN)
+    time.sleep(2)
+    driver.close()
+
+
 
 ##should this include a check on the list page or can this be run prior to a Ant creation to confirm the non reuse of existing WO or split into 2 methods 
 def checkWOconflict():
@@ -114,6 +123,7 @@ def checkWOconflict():
 if __name__ == '__main__':
     setupRI()
     checkWO()
+##    woQR()
     createRI()
     generateGUID()
     v52gen_assembly()

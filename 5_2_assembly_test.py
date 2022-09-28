@@ -3,7 +3,7 @@ from assemblies_pom import *
 
 class TestAntCreation(unittest.TestCase):
 
-    def test_1_create(self):
+    def test_1_assembly(self):
                 
         setRIN()
         setupRI()

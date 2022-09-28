@@ -13,4 +13,3 @@ WO_entry()
 radiofield_900()
 save_ri()    
 checkRIN()
-
