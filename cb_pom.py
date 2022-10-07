@@ -58,6 +58,7 @@ def create():
 def validate():    
     time.sleep(2)
     driver.find_element(by=By.XPATH, value=capbanks_locators.search).send_keys(serialnumber)
+    time.sleep(2)
     if serialnumber in driver.page_source:
         print(f'Capbank created successfully {serialnumber}')
     else:

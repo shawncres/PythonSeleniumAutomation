@@ -156,6 +156,7 @@ def newSAattach():
     x = len(serialLists)
     i = 0
     while x > 0:
+        time.sleep(3)
         driver.find_element(by=By.XPATH, value=assemblies_locators.sn2_field).send_keys(serialLists[i][0])
         time.sleep(3)
         driver.find_element(by=By.XPATH, value=assemblies_locators.parentchild_but).click()
@@ -187,6 +188,34 @@ def antcommission():
         pass
     print('Ant Commissioning Successful')
 
+
+def assembliescommission():
+    for i in serialLists:
+        
+        driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/assemblies/{0}#comm".format(i[0]))
+        time.sleep(3)
+        try:
+            driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div/div[1]/div[1]/div[2]/div/button').click()
+            time.sleep(3)
+        except:
+            print(f'{i[0]} subassembly does not need to be comissioned')
+        
+    print('All remaining subassemblies now in Commission')
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Function to send assertations to Pytest, 
 def finalization():
     time.sleep(3)
     driver.get(
@@ -215,6 +244,7 @@ if __name__ == '__main__':
     newchecklists()
     newSAattach()
     antcommission()
+    assembliescommission()
 
 
     
