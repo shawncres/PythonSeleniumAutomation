@@ -1,21 +1,11 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver.support.ui import Select
-import time
-import unittest
-import warnings
-import random
-import warnings
+from webdrivermanager import *
 from Locators_HM import assemblies_locators
 from Locators_HM import ri_locators
 
 def setupRI():
     '''Initiates selenium and pulls up the Robot Identification page'''
     global driver
-    driver = webdriver.Edge()
+    driver = startEdgeDriver()
     driver.implicitly_wait(10)
     warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 

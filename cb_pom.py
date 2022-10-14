@@ -1,13 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import Select
-import time
-import unittest
-import warnings
-import random
-import warnings
+from webdrivermanager import *
 from Locators_HM import capbanks_locators
 
 def getRIN():
@@ -31,7 +22,7 @@ def alreadyhasCB():
     
 def setupRI():
     global driver
-    driver = webdriver.Edge()
+    driver = startEdgeDriver()
     driver.implicitly_wait(10)
     warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
     global GUID
@@ -73,7 +64,7 @@ def assign():
     driver.find_element(by=By.XPATH, value=capbanks_locators.antselect).send_keys(RIN)
     time.sleep(2)
     driver.find_element(by=By.XPATH, value='/html/body/div[2]/div[3]/div[2]/div/form/div[2]/div/div/div').click()
-    time.sleep(2)
+    time.sleep(3)
     driver.find_element(by=By.XPATH, value=capbanks_locators.saveant).click()
     time.sleep(3)
     if RIN in driver.page_source:

@@ -1,20 +1,10 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import Select
-import time
-import unittest
-import warnings
-import random
-import warnings
-import qrcode
+from webdrivermanager import *
 from Locators_HM import ri_locators
 
 
 def setupRI():
     global driver
-    driver = webdriver.Edge()
+    driver = startEdgeDriver()
     driver.implicitly_wait(10)
     warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
     global GUID
