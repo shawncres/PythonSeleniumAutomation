@@ -16,7 +16,7 @@ driver.implicitly_wait(10)
 
 
 
-driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/softwre_releases")
+driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/software_releases")
 
 
 
@@ -70,7 +70,7 @@ for i in entities:
     time.sleep(4)
 
 
-driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/softwre_releases")
+driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/software_releases")
 time.sleep(6)
 for i in swrnames:
     if i in driver.page_source:

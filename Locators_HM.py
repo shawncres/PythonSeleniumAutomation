@@ -25,6 +25,7 @@ class assemblies_locators():
     serial_number = '//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input'
     part_number = '//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input'
     WOnumber = '//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[3]/div/input'
+    BOM_rev = '//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[4]/input'
     assign_but = '//*[@id="application"]/div[3]/div/div[1]/div/div/button'
     parent_page = 'https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/parent_serial_number'    
     sn1_field = '//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input'

@@ -62,7 +62,10 @@ def serialization():
             driver.find_element(by=By.XPATH, value=assemblies_locators.serial_number).send_keys(serialNumber)
             time.sleep(2)
             assignWO()
-            time.sleep(1)
+            time.sleep(2)
+##            comment out if BOM is not necessary
+            driver.find_element(by=By.XPATH, value=assemblies_locators.BOM_rev).send_keys('Z')
+            time.sleep(2)
             driver.find_element(by=By.XPATH, value=assemblies_locators.assign_but).click()
             serialList.append(serialNumber)
             time.sleep(2)
@@ -150,6 +153,7 @@ def newSAattach():
         driver.find_element(by=By.XPATH, value=assemblies_locators.sn2_field).send_keys(serialLists[i][0])
         time.sleep(3)
         driver.find_element(by=By.XPATH, value=assemblies_locators.parentchild_but).click()
+        time.sleep(3)
         driver.find_element(by=By.XPATH, value=assemblies_locators.sn2_field).clear()    
         i += 1
         x -= 1
@@ -170,6 +174,7 @@ def newchecklists():
 def antcommission():
     time.sleep(4)
     driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/ants/{0}#comm".format(GUID))
+    time.sleep(3)
     try:
         driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[2]/div/button[4]').click()
         time.sleep(5)        
@@ -181,7 +186,7 @@ def antcommission():
 
 def assembliescommission():
     for i in serialLists:
-        
+        time.sleep(3)
         driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/assemblies/{0}#comm".format(i[0]))
         time.sleep(3)
         try:
@@ -234,7 +239,9 @@ if __name__ == '__main__':
     newchecklists()
     newSAattach()
     antcommission()
+    screenshot(driver)
     assembliescommission()
-
+    driver.close()
+    
 
     

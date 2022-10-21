@@ -138,6 +138,7 @@ def main():
                 validation()
                 ent+=1
         print(tsbList)
+        screenshot(driver)
         driver.close()
 
 

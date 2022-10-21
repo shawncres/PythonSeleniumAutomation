@@ -87,7 +87,8 @@ def checkRIN():
     RIN = RINfield.text
     print(RIN)
     time.sleep(2)
-    driver.close()
+    screenshot(driver)
+
 
 
 
@@ -109,6 +110,17 @@ def checkWOconflict():
     else:
         print('Previously unused WO is usable')
 
+##
+##def screenshot():
+##    time.sleep(3)
+##    filename = (str(time.ctime())+'.png').replace(' ','_').replace(':', '')                                                               
+##    path = r'C:\Users\ShawnCooper\pyproj\automationtests\Atta\Screenshots\{}'.format(filename)                                                               
+##    driver.save_screenshot(path)
+##    time.sleep(3)
+##    print(f'Screenshot captured as {filename}')
+##    driver.close()                                 
+
+
 
 if __name__ == '__main__':
     setupRI()
@@ -121,3 +133,4 @@ if __name__ == '__main__':
     radiofield_900()
     save_ri()    
     checkRIN()
+    screenshot(driver)

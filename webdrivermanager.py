@@ -25,11 +25,6 @@ def startEdgeDriver():
 
 
 
-
-
-
-
-
 def startChromeDriver():
     '''Declare the driver variable as this function after importing this module for Chrome  '''    
     from selenium import webdriver
@@ -37,14 +32,16 @@ def startChromeDriver():
     from webdriver_manager.chrome import ChromeDriverManager
     
     return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    
 
-
-
-
-
-
-
+## Must add driver as argument     
+def screenshot(driver):
+    time.sleep(3)
+    filename = (str(time.ctime())+'.png').replace(' ','_').replace(':', '')                                                               
+    path = r'C:\Users\ShawnCooper\pyproj\automationtests\Atta\Screenshots\{}'.format(filename)                                                               
+    driver.save_screenshot(path)
+    time.sleep(3)
+    print(f'Screenshot captured as {filename}')
+ 
 
 
 if __name__=='__main__':
