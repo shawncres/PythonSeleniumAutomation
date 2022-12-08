@@ -1,5 +1,4 @@
 from webdrivermanager import *
-from Locators_HM import ri_locators
 
 
 

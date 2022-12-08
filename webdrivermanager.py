@@ -45,8 +45,8 @@ def screenshot(driver):
 
 
 if __name__=='__main__':
-    startChromeDriver('https://www.google.com/')
-##    startEdgeDriver()
+##    startChromeDriver('https://www.google.com/')
+    startEdgeDriver()
 
     
     

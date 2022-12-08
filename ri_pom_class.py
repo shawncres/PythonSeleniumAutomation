@@ -65,7 +65,6 @@ class roboident():
         driver.find_element(by=By.XPATH, value=ri_locators.v4namefield).send_keys(randomantname)
         
     def WO_entry(self):
-        print(randomWOID)
         driver.find_element(by=By.XPATH, value=ri_locators.WOnumberfld).send_keys(randomWOID)
 
     def radiofield_900(self):
@@ -131,5 +130,5 @@ if __name__ == '__main__':
     test1.radiofield_900()
     test1.save_ri()    
     test1.checkRIN()
-    screenshot(driver)
+    driver.close()
 

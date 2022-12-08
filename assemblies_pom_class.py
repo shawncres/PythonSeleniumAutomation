@@ -16,8 +16,11 @@ class assemblies():
     def setRIN(self):
         '''Asks for RIN to be used in Ant creation throughout the test'''
         global RIN
-        RIN = input('What is the Ants friendly name?: ').strip().upper()
-        print(RIN)
+        try:
+            print(RIN)
+        except:
+            RIN = input('What is the Ants friendly name?: ').strip().upper()
+        
 
     def getGUID(self):
         '''Uses preset RIN to extract the GUID to be used in later parenting logic'''
@@ -50,6 +53,20 @@ class assemblies():
                          ['149271', '149820', '152395', '152395', '146445', '146445']]
         partLists.append(partLists[3])
         partLists.append(partLists[4])
+
+    def partlist43(self):
+        ''' Ant partlist to be used for 5.2 ants specifically for use in serialization and parenting logic'''
+        global partLists
+        partLists = [['140053', '140216', '140092', '140213', '140092'],
+                     ['140221', '140214', '140092', '140215', '140092'],
+                     ['147920', '140217', '140092', '140218', '140092'],
+                     ['140105', '140219', '140092', '140220', '140092'],
+                     ['140010', '140209', '140210', '132773'],
+                     ['147918', '140211', '140212', '132773'],
+                     ['147107'],
+                     ['132845'],
+                     ['141007'],
+                     ['140135']]
         
 
     def serialization(self):
@@ -60,17 +77,24 @@ class assemblies():
             serialList = []
             for i in partList:
                 driver.get(assemblies_locators.assign_page)
-                time.sleep(3)
-                driver.find_element(by=By.XPATH, value=assemblies_locators.part_number).send_keys(i)
-                serialNumber = i + '-' + RIN + '-' + str(random.randrange(1000, 9999, 1))
+                time.sleep(2)
+                try:
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.part_number).send_keys(i)
+                    'Part found!' in driver.page_source
+                except:
+                    print('Error part number not found..... Retrying')
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.part_number).clear()
+                    time.sleep(2)                    
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.part_number).send_keys(i)
+                serialNumber = i + '-' + RIN + '-' + str(random.randrange(10000, 99999, 1))
                 driver.find_element(by=By.XPATH, value=assemblies_locators.serial_number).send_keys(serialNumber)
                 time.sleep(2)
-                self.assignWO()
-                time.sleep(2)
-    ##            comment out if BOM is not necessary
-                driver.find_element(by=By.XPATH, value=assemblies_locators.BOM_rev).send_keys('Z')
-                time.sleep(2)
-                driver.find_element(by=By.XPATH, value=assemblies_locators.assign_but).click()
+                try:
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.assign_but).click()
+                except:
+                    self.assignWO()
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.BOM_rev).send_keys('Z')    
+                    driver.find_element(by=By.XPATH, value=assemblies_locators.assign_but).click()
                 serialList.append(serialNumber)
                 time.sleep(2)
             serialLists.append(serialList)
@@ -158,16 +182,29 @@ class assemblies():
             time.sleep(3)
             driver.find_element(by=By.XPATH, value=assemblies_locators.parentchild_but).click()
             time.sleep(3)
-            driver.find_element(by=By.XPATH, value=assemblies_locators.sn2_field).clear()    
+            try:
+                driver.find_element(by=By.XPATH, value=assemblies_locators.sn2_field).clear()
+            except:
+                pass 
             i += 1
             x -= 1
         print(f'{len(serialLists)} subassemblies attached')
+
+    def botchecklist(self):        
+        driver.get(assemblies_locators.subassembly_page.format(GUID))
+        time.sleep(4)
+        try:            
+            self.checklists()
+            self.commission()
+        except:
+            pass
+        time.sleep(3)
 
     def newchecklists(self):
         x = len(serialLists)
         i = 0
         while x > 0:
-            driver.get("https://attabotics-hivemind-test.azurewebsites.net/manufacturing/assemblies/{0}#hierarchy".format(serialLists[i][0]))
+            driver.get(assemblies_locators.subassembly_page.format(serialLists[i][0]))
             time.sleep(3)
             self.checklists()
             time.sleep(3)
@@ -177,7 +214,7 @@ class assemblies():
             
     def antcommission(self):
         time.sleep(4)
-        driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/ants/{0}#comm".format(GUID))
+        driver.get(assemblies_locators.comm_ant_page.format(GUID))
         time.sleep(3)
         try:
             driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[2]/div/button[4]').click()
@@ -191,7 +228,7 @@ class assemblies():
     def assembliescommission(self):
         for i in serialLists:
             time.sleep(3)
-            driver.get("https://attabotics-hivemind-test.azurewebsites.net/commissioning/assemblies/{0}#comm".format(i[0]))
+            driver.get(assemblies_locators.comm_assm_page.format(i[0]))
             time.sleep(3)
             try:
                 driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div/div[1]/div[1]/div[2]/div/button').click()

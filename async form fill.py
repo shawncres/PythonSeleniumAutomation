@@ -26,8 +26,7 @@ collection = {firstfield:'Jack', lastfield:'Dorsey', bus:'twitter', email:'jack@
 
 async def fillfields(b):
     for k,v in b.items():        
-        c = driver.find_element(by=By.XPATH, value=k)
-        c.send_keys(v)
+        driver.find_element(by=By.XPATH, value=k).send_keys(v)
     await asyncio.sleep(1)
 
 
@@ -36,7 +35,9 @@ async def main():
         fillfields(collection),
         return_exceptions=True)
 
-        
-asyncio.run(main(), debug=True)
+
+
+if __name__=='__main__':
+    asyncio.run(main(), debug=True)
 
 
