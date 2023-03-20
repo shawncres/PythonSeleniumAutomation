@@ -44,6 +44,7 @@ def asssort():
     time.sleep(4)
 
     assserial = driver.find_element(by = By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[1]/div/div[1]/div[1]/div[1]/div/div[1]').text
+    print(assserial)
     global extrin
     extrin = assserial.split('-')[1]
 

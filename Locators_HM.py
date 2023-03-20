@@ -1,5 +1,5 @@
 mainurl = 'https://attabotics-hivemind-test.azurewebsites.net'
-##mainurl = 'https://attabotics-hivemind-test-feature.azurewebsites.net'
+#mainurl = 'https://attabotics-hivemind-test-feature.azurewebsites.net'
 
 class ri_locators():
     ri_page = mainurl+'/manufacturing/robot_identities'
@@ -7,9 +7,9 @@ class ri_locators():
     generate = '/html/body/div[2]/div/div[2]/div/form/div[1]/div/button'
     GUIDfield = '/html/body/div[2]/div/div[2]/div/form/div[1]/div/input'
     GeneralAssembly = 'body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > i.dropdown.icon'
-    ant5_2 = '/html/body/div[2]/div/div[2]/div/form/div[2]/div/div[2]/div[9]'
+    ant5_2 = '/html/body/div[2]/div/div[2]/div/form/div[2]/div/div[2]/div[11]'
     ant5_1 = '/html/body/div[2]/div/div[2]/div/form/div[2]/div/div[2]/div[8]'
-    ant4_3 = '/html/body/div[2]/div/div[2]/div/form/div[2]/div/div[2]/div[6]'
+    ant4_3 = '/html/body/div[2]/div/div[2]/div/form/div[2]/div/div[2]/div[7]'
     v4namefield = '/html/body/div[2]/div/div[2]/div/form/div[3]/input'
     RINgenerate ='/html/body/div[2]/div/div[2]/div/form/div[3]/div/button' 
     RINfield = '/html/body/div[2]/div/div[2]/div/form/div[3]/div'

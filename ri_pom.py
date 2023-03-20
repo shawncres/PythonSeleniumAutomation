@@ -57,6 +57,7 @@ def v4namegen():
     time.sleep(3)
     randomantname = random.choice(['a', 'b', 'v', 'x']).upper() + random.choice(['a', 'b', 'v', 'x']).upper() + str(random.randrange(10, 99, 1)) + str('5V4')
     driver.find_element(by=By.XPATH, value=ri_locators.v4namefield).send_keys(randomantname)
+    print(randomantname)
     
 def WO_entry():
     print(randomWOID)

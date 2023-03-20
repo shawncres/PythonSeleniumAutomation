@@ -1,17 +1,13 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-import time
-import unittest
-import selenium
-import random
-import warnings
+from webdrivermanager import *
+
+
+
+
 from Locators import srr_locators
 
 
-
-driver = webdriver.Edge()
+global driver
+driver = startEdgeDriver()
 driver.implicitly_wait(10)
 
 
@@ -49,7 +45,7 @@ for i in entities:
 
 
 
-    robotRange = range(1,10,1)
+    robotRange = range(1,16,1)
 
     for i in robotRange:
         try:
@@ -59,8 +55,11 @@ for i in entities:
             driver.find_element(by=By.XPATH, value=Field).send_keys(FieldVers)
         except NoSuchElementException:
             try:
+                time.sleep(1)
                 driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div:nth-child(1) > div > div > i').click()
-                driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/form/div[3]/div/div[2]/div/div/div/div/div[2]/div[1]').click()
+                time.sleep(1)
+                ##Robot version 4 is 22.2 8 is 4.3
+                driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div > div > div > div.menu.transition > div:nth-child(4)').click() 
                 driver.find_element(by=By.CSS_SELECTOR, value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.content > form > div:nth-child(3) > div > div.ui.tab.segment.attached.active > div > div:nth-child(1) > div > div > i').click()
             except NoSuchElementException:
                 break
