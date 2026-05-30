@@ -14,8 +14,8 @@ warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWa
 class TestAntCreation(unittest.TestCase):
 
     def test_create(self):
-            # NOTE: URL sanitized for public repository
-            driver.get("https://<company>-hivemind-test.example.com/")
+            # NOTE: Company and project names sanitized for public repository (original: Attabotics / Hivemind)
+            driver.get("https://robotinc-roboticserp-test.example.com/")
             time.sleep(5)    
         
             ham = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[2]/div[1]/button')
@@ -63,7 +63,7 @@ class TestAntCreation(unittest.TestCase):
             
 
             time.sleep(4)
-            antassemblypage= 'https://<company>-hivemind-test.example.com/manufacturing/assemblies/'+GUID+'#heirarchy'
+            antassemblypage= 'https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/'+GUID+'#heirarchy'
 
             driver.get('{0}'.format(antassemblypage))
 
