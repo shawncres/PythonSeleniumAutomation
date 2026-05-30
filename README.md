@@ -3,7 +3,7 @@
 A collection of advanced Selenium WebDriver automation scripts demonstrating real-world test automation capabilities.
 
 > **Sanitized for Public Viewing**  
-> All internal URLs, company names, project identifiers, and sensitive details have been replaced with placeholders.
+> All internal URLs, company names (Hivemind → RoboticsERP, Attabotics → RobotINC), project identifiers, and sensitive details have been replaced with placeholders or rebranded.
 
 ### Skills Demonstrated
 
@@ -19,11 +19,11 @@ A collection of advanced Selenium WebDriver automation scripts demonstrating rea
 
 | File | What It Shows |
 |------|---------------|
-| `Hivemind - Full Assembly - Working script.py` | Full end-to-end workflow including serial number assignment, hierarchical parenting, checklist validation, and multi-pass processing |
-| `Hivemind - Assembly - Functional test.py` | Functional testing of complex assembly and sub-assembly operations |
-| `Hivemind Full Assembly Unit test.py` | Structured testing approach for large-scale workflows |
-| `Hivemind Sites - Create Ant - Functional test.py` | Site-specific creation, commissioning, and TSB (Technical Service Bulletin) flows |
-| `Hivemind assembly testing VJ825.py` | Targeted assembly validation testing |
+| `full_assembly_working_script.py` | Full end-to-end workflow including serial number assignment, hierarchical parenting, checklist validation, and multi-pass processing |
+| `assembly_functional_test.py` | Functional testing of complex assembly and sub-assembly operations |
+| `full_assembly_unit_test.py` | Structured testing approach for large-scale workflows |
+| `sites_create_ant_functional_test.py` | Site-specific creation, commissioning, and TSB (Technical Service Bulletin) flows |
+| `assembly_testing_vj825.py` | Targeted assembly validation testing |
 
 ### Tech & Patterns Used
 
@@ -36,7 +36,7 @@ A collection of advanced Selenium WebDriver automation scripts demonstrating rea
 
 ### Original Context
 
-These were developed for rigorous internal testing of a sophisticated asset/equipment management platform. The code has been generalized and redacted while preserving the technical complexity and patterns.
+These were developed for rigorous internal testing of a sophisticated asset/equipment management platform. The code has been generalized and redacted (with internal project names rebranded to RoboticsERP and RobotINC) while preserving the technical complexity and patterns.
 
 ---
 
