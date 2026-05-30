@@ -17,9 +17,9 @@ partLists=[['149269','150710','149816','152881','152585','150705','145135'],['14
 partLists.append(partLists[3])
 partLists.append(partLists[4])
 
-# NOTE: URL sanitized for public repository
+# NOTE: Company and project names sanitized for public repository (original: Attabotics / Hivemind)
 driver = webdriver.Edge()
-driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
 
 time.sleep(3)
 RINfield = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[1]/div/div[1]')
@@ -34,7 +34,7 @@ for partList in partLists:
     ## Serial assignation to all specific parts from part list, possible iteration logic needs to be done to go over each sub assembly part 
 
     for i in partList:
-        driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/assign_serial_number")
+        driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/assign_serial_number")
 
         time.sleep(3)
         pnfield = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
@@ -53,7 +53,7 @@ for partList in partLists:
         time.sleep(2)
 
     time.sleep(3)
-    driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/parent_serial_number")
+    driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
     time.sleep(3)
 
     print(serialList)
@@ -74,13 +74,13 @@ for partList in partLists:
             parentButton = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
             parentButton.click()
             time.sleep(5)
-            driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/parent_serial_number")
+            driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
 
 
 
     ## CheckList and Final attaching logic of the Subassembly to the Ant Can this be combined with the above step or should this be completed as a final sequence once 
     time.sleep(4)
-    driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#hierarchy".format(serialList[0]))
+    driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#hierarchy".format(serialList[0]))
             
     time.sleep(3)
 
@@ -116,5 +116,5 @@ for partList in partLists:
 
     
 time.sleep(3)
-driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
 print('All Ant sub-assemblies completed')
