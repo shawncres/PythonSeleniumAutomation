@@ -106,3 +106,16 @@ dmypy.json
 .vscode/
 *.swp
 *.swo
+
+# Additional for this repo (sanitized public version)
+.vs/
+Screenshots/
+features/
+*.pkl
+*.xlsx
+*.png
+*.txt
+cookies.pkl
+desktop.ini
+foo.png
+testing.txt
