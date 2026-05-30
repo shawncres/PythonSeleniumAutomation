@@ -23,7 +23,8 @@ A collection of advanced Selenium WebDriver automation scripts demonstrating rea
 | `assembly_functional_test.py` | Functional testing of complex assembly and sub-assembly operations |
 | `full_assembly_unit_test.py` | Structured testing approach for large-scale workflows |
 | `sites_create_ant_functional_test.py` | Site-specific creation, commissioning, and TSB (Technical Service Bulletin) flows |
-| `assembly_testing_vj825.py` | Targeted assembly validation testing |
+
+Also includes `azure_blob_example.py` (safe Azure integration pattern example).
 
 ### Tech & Patterns Used
 
