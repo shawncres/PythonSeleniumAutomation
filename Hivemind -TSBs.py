@@ -2,173 +2,249 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.edge.options import Options
 import time
 import unittest
-import selenium
+import warnings
 import random
 import warnings
-from Locators_HM import tsb_locators
+
+driver = webdriver.Edge()
+driver.implicitly_wait(10)
+warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
+
+GUID = ''
 
 
+class TestAntCreation(unittest.TestCase):
 
-def setupTSB():        
-        global driver
+    def test_1_create(self):
+        """Accesses RoboticsERP, Creates V4.3 Ant, and returns GUID as global variable."""
+        # NOTE: Company and project names sanitized for public repository (original: Attabotics / Hivemind)
+        driver.get("https://robotinc-roboticserp-test.example.com/")
+        time.sleep(5)
+
+        ham = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[2]/div[1]/button')
+        ham.click()
+
+        time.sleep(2)
+
+        comAnts = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[1]/div[3]/div[2]/a[4]')
+        comAnts.click()
+
+        time.sleep(3)
+        createAnt = driver.find_element(by=By.XPATH,
+                                        value='//*[@id="application"]/div[3]/div/div[1]/div/div[1]/div[1]/div/button')
+        createAnt.click()
+
+        time.sleep(3)
+        guidAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div/button')
+        guidAnt.click()
+
+        time.sleep(3)
+
+        hwvers = driver.find_element(by=By.CSS_SELECTOR,
+                                     value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > i')
+        hwvers.click()
+
+        time.sleep(3)
+        hwvers43 = driver.find_element(by=By.CSS_SELECTOR,
+                                       value='body > div.ui.dimmer.modals.page.transition.visible.active > div > div.scrolling.content > div > form > div:nth-child(2) > div > div > div:nth-child(6)')
+        hwvers43.click()
+
+        ##RINgen = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[3]/div/button')
+        ##RINgen.click()
+
+        GUIDfield = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[1]/div/input')
+        global GUID
+        GUID = GUIDfield.get_attribute('value')
+        print(GUID)
+
+        time.sleep(4)
+        antname = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[3]/input')
+        randomantname = random.choice(['a', 'b', 'v', 'x']).upper() + random.choice(['a', 'b', 'v', 'x']).upper() + str(
+            random.randrange(10, 99, 1)) + str('5V4')
+        antname.send_keys(randomantname)
+
+        time.sleep(4)
+        ## 0008:4186a798
+        radioID = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[4]/div[1]/input')
+        randomRadioID = str(random.randrange(1000, 9999, 1)) + ':' + str(
+            random.randrange(1000, 9999, 1)) + random.choice(['a', 'b', 'v', 'x']) + str(random.randrange(111, 999, 1))
+        radioID.send_keys(randomRadioID)
+
+        time.sleep(4)
+        radioID2 = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[4]/div[2]/input')
+        randomRadioID2 = str(random.randrange(1000, 9999, 1)) + ':' + str(
+            random.randrange(1000, 9999, 1)) + random.choice(['a', 'b', 'v', 'x']) + str(random.randrange(111, 999, 1))
+        radioID2.send_keys(randomRadioID2)
+
+        time.sleep(5)
+        saveAnt = driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[3]/button[2]')
+        saveAnt.click()
+
+        time.sleep(4)
+        antassemblypage = 'https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/' + GUID + '#heirarchy'
+
+        driver.get('{0}'.format(antassemblypage))
+
+        time.sleep(10)
+
+        if GUID in driver.page_source:
+            print('Ant created successfully GUID is {0}'.format(GUID))
+        else:
+            print('Ant not found')
+        self.assertTrue(GUID in driver.page_source)
+
+        driver.close()
+
+    def test_2_assemble(self):
+        '''Takes Global GUID from prior test, serializes and assembles all subassemblies.'''
+        partLists = [['148000'], ['140053', '140216', '140092', '140213', '140092'],
+                     ['140221', '140214', '140092', '140215', '140092'],
+                     ['147920', '140217', '140092', '140218', '140092'],
+                     ['140105', '140219', '140092', '140220', '140092'],
+                     ['140010', '140209', '140210', '132773'],
+                     ['147918', '140211', '140212', '132773'], ['147107'], ['132845'], ['141007'], ['140135']]
+
         driver = webdriver.Edge()
         driver.implicitly_wait(10)
-        driver.get(tsb_locators.tsb_page)
+        # NOTE: Company and project names sanitized for public repository (original: Attabotics / Hivemind)
+        driver.get(
+            "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
         warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
-        global tsbList
-        tsbList = []
-
-
-def createTSB():        
-        time.sleep(5)
-        driver.find_element(by=By.XPATH, value=tsb_locators.create).click()
-
-
-
-def nameID(e):
-        global idname
-        idname= e+' Test-TSB-'+str(random.randrange(1000,9999,1)) 
-        time.sleep(4)
-        print(idname)
-        tsbList.append(idname)
-        driver.find_element(by=By.XPATH, value=tsb_locators.id_box).send_keys(idname)
-        
-
-def detailsTSB():
-        '''The Link to Document, random Priority and Optional/Mandatory selection'''
-        time.sleep(2)                
-        driver.find_element(by=By.XPATH, value=tsb_locators.link_box).send_keys('https://attabotics.sharepoint.com/:u:/s/SoftwareQATeam/ETMkBqusyUBMswCwrgOLRugBCm8UaR8wn51iP3G2GyeEYA?e=eHETYk')
-        
-        randomPriorityvalue='/html/body/div[2]/div/div[2]/div/form/div[2]/div[3]/div/div[{0}]/div/input'.format(str(random.randrange(1,4,1)))
-        priority=driver.find_element(by=By.XPATH, value=randomPriorityvalue)
-        priority.click()
-
-        randomMandatoryValue='/html/body/div[2]/div/div[2]/div/form/div[2]/div[4]/div/div[{0}]/div/input'.format(str(random.randrange(1,3,1)))
-        Mandatory=driver.find_element(by=By.XPATH, value=randomMandatoryValue)
-        Mandatory.click()  
-
-
-def entitySelect(ent):
-        time.sleep(2)                
-        entityType=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/input')
-        entityType.click()
 
         time.sleep(3)
+        RINfield = driver.find_element(by=By.XPATH,
+                                       value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[1]/div/div[1]')
+        RIN = RINfield.text
 
-        entity= f'/html/body/div[2]/div/div[2]/div/form/div[2]/div[1]/div/div/div[{str(ent)}]'
-        global entname
-        entname = driver.find_element(by=By.XPATH, value=entity).text
-        driver.find_element(by=By.XPATH, value=entity).click()
+        print(RIN)
 
+        for partList in partLists:
+            serialList = []
 
-##dueDate=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[33]')
-##dueDate.send_keys('2022-04-21 12:00')
-##dueDate.click()
-def dateSelect():
-                
-        cal=driver.find_element(by=By.XPATH, value='/html/body/div[2]/div/div[2]/div/form/div[2]/div[2]/input[2]')
-        cal.click()
-        time.sleep(3)
-        today=driver.find_element(by=By.XPATH, value='/html/body/div[3]/div[2]/div/div[2]/div/span[35]')
-        today.click()
+            ## Serial assignation to all specific parts from part list, possible iteration logic needs to be done to go over each sub assembly part
 
-  
-def selectEntities():
-        try:
-                driver.find_element(by=By.CSS_SELECTOR, value=tsb_locators.first_option).click()    
-                time.sleep(3)
-        except:
+            for i in partList:
+                try:
+                    driver.get(
+                        "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/assign_serial_number")
+
+                    time.sleep(5)
+                    pnfield = driver.find_element(by=By.XPATH,
+                                                  value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
+                    pnfield.send_keys(i)
+
+                    snfield = driver.find_element(by=By.XPATH,
+                                                  value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input')
+                    serialNumber = i + '-' + RIN + '-' + str(random.randrange(1000, 9999, 1))
+                    snfield.send_keys(serialNumber)
+                    time.sleep(3)
+                    assignButton = driver.find_element(by=By.XPATH,
+                                                       value='//*[@id="application"]/div[3]/div/div[1]/div/div/button')
+                    assignButton.click()
+                    serialList.append(serialNumber)
+                    time.sleep(2)
+                except:
+                    continue
+
+            time.sleep(3)
+            driver.get(
+                "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
+            time.sleep(3)
+
+            print(serialList)
+
+            ## Parenting logic to attach each component to its parent subassembly, utilizing the serial list created in above logic,
+            ## Important to not the Subassembbly is diffrentiated only by it's position as first element on the list, hence serial lists need to be kept separate
+            ## Need to find a way to capture/process lists separately or to indicate the position of the subassembly vs part in a singular list, possibly a panda's grid, so far colour is the indicator
+
+            for i in serialList:
+                if serialList[0] != i:
+                    try:
+                        time.sleep(5)
+                        snfield1 = driver.find_element(by=By.XPATH,
+                                                       value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div/input')
+                        snfield1.send_keys(serialList[0])
+                        time.sleep(3)
+                        snfield2 = driver.find_element(by=By.XPATH,
+                                                       value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
+                        snfield2.send_keys(i)
+                        time.sleep(6)
+                        parentButton = driver.find_element(by=By.XPATH,
+                                                           value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
+                        parentButton.click()
+                        time.sleep(6)
+                        driver.get(
+                            "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
+                    except:
+                        continue
+
+            ## CheckList and Final attaching logic of the Subassembly to the Ant Can this be combined with the above step or should this be completed as a final sequence once
+            time.sleep(4)
+            driver.get(
+                "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#hierarchy".format(
+                    serialList[0]))
+
+            time.sleep(3)
+
+            try:
+                cb = driver.find_elements(by=By.CSS_SELECTOR, value='input[type=checkbox]')
+                for i in cb:
+                    i.click()
+            except StopIteration:
                 pass
-        
-        driver.find_element(by=By.XPATH, value=tsb_locators.save_tsb).click()
 
+            time.sleep(3)
 
-def validation():
+            try:
+                cbsave = driver.find_element(by=By.CSS_SELECTOR,
+                                             value='#application > div.pusher > div > div:nth-child(1) > div > div > div:nth-child(3) > div.ui.bottom.attached.tab.segment.active > div > div > div.six.wide.column > div > button')
+                cbsave.click()
+                time.sleep(3)
+                cbcomission = driver.find_element(by=By.CSS_SELECTOR,
+                                                  value='#application > div.pusher > div > div:nth-child(1) > div > div > div.ui.internally.celled.top.aligned.very.compact.grid > div:nth-child(1) > div.eight.wide.right.floated.right.aligned.column > span.ui.fluid > button')
+                try:
+                    cbcomission.click()
+                    time.sleep(3)
+                    driver.switch_to.alert.accept()
+                except:
+                    continue
+            except NoSuchElementException:
+                print('QA checklist not required for this Subassembly')
+                pass
+
+            time.sleep(3)
+            assignParentButt = driver.find_element(by=By.CSS_SELECTOR,
+                                                   value='#application > div.pusher > div > div:nth-child(1) > div > div > div.ui.internally.celled.top.aligned.very.compact.grid > div:nth-child(1) > div.eight.wide.right.floated.right.aligned.column > a > button')
+            assignParentButt.click()
+
+            time.sleep(5)
+            snfield2 = driver.find_element(by=By.XPATH,
+                                           value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
+            snfield2.send_keys(GUID)
+            time.sleep(3)
+            parentButton = driver.find_element(by=By.XPATH,
+                                               value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
+            parentButton.click()
+            serialList = []
+
+        time.sleep(4)
+        driver.get("https://robotinc-roboticserp-test.example.com/commissioning/ants/{0}#comm".format(GUID))
         time.sleep(3)
-        driver.find_element(by=By.XPATH, value=tsb_locators.search).send_keys(idname)
-        time.sleep(6)
-        if idname in driver.page_source:
-                print('TSB created successfully')
-        else:
-                print('TSB not found')
-        driver.find_element(by=By.XPATH, value=tsb_locators.search).clear()
-
-
-
-## Drop  down box problems to complete list, don't forget to delete the hardcoded list for the rest of the test to work after this is fixed,
-## possible fix is the select module of selenium to select things in drop down boxes better         
-def completingTSBs():
-        tsbList = ['Ant Test-TSB-3736', 'Work Station Test-TSB-6813', 'Ant Hill Test-TSB-3539', 'Cap Bank Test-TSB-6392', 'Site Test-TSB-6731', 'Structure Test-TSB-4216', 'System Panel Test-TSB-2505', 'Radio Panel Test-TSB-7492', 'Sub Assembly Instance Test-TSB-4343']
-        for i in tsbList:
-                driver.get(tsb_locators.tsb_page)
-                time.sleep(10)
-                driver.find_element(by=By.XPATH, value=tsb_locators.search).send_keys(i)
-                time.sleep(6)
-                driver.find_element(by=By.XPATH, value=tsb_locators.details).click()
-                time.sleep(3)
-                driver.find_element(by=By.XPATH, value=tsb_locators.details_tsb).click()
-                time.sleep(3)
-                driver.find_element(by=By.XPATH, value=tsb_locators.update_tsb).click()
-                time.sleep(3)
-                driver.find_element(by=By.CSS_SELECTOR, value=tsb_locators.status_tsb).click()
-                time.sleep(3)
-                driver.find_element(by=By.XPATH, value=tsb_locators.complete_tsb).click()
-                time.sleep(3)
-                driver.find_element(by=By.XPATH, value=tsb_locators.save_status).click()                
-                
-                
-                
-        pass
-
-
-
-def main():
-        setupTSB()
-        ent = 1
-        while ent <10:
-                createTSB()                
-                detailsTSB()
-                entitySelect(ent)
-                nameID(entname)
-                dateSelect()
-                selectEntities()
-                validation()
-                ent+=1
-        print(tsbList)
-        screenshot(driver)
-        driver.close()
+        markInComission = driver.find_element(by=By.XPATH,
+                                              value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[2]/div/button[4]')
+        markInComission.click()
+        time.sleep(3)
+        driver.get(
+            "https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+        time.sleep(3)
+        serialzerovalidation = driver.find_element(by=By.XPATH,
+                                                   value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div[2]/div[1]/div[2]/div')
+        print(serialzerovalidation.text[:1])
+        self.assertEqual(serialzerovalidation.text[:1], '0', 'All Sub-assemblies not attached!')
+        print('Ant fully assembled successfully!')
 
 
 if __name__ == '__main__':
-        setupTSB()
-        completingTSBs()
-
-
-
-
-
-
-
-##sortDate=driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div[2]/div[3]/div/table/thead/tr/th[5]/a/span')
-##sortDate.click()
-##time.sleep(4)
-
-
-
-
-
-
-##
-##Assertion
-##time.sleep(15)
-##self.assertTrue(idname in driver.page_source)
-
-
-
-
-
-
-
+    unittest.main(verbosity=2)
