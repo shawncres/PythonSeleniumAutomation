@@ -22,8 +22,8 @@ class TestAntCreation(unittest.TestCase):
 
         driver = webdriver.Edge()
         driver.implicitly_wait(10)
-        # NOTE: URL sanitized for public repository
-        driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+        # NOTE: Company and project names sanitized for public repository (original: Attabotics / Hivemind)
+        driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
         warnings.filterwarnings(action="ignore", message="unclosed", category=ResourceWarning)
 
         time.sleep(3)
@@ -39,7 +39,7 @@ class TestAntCreation(unittest.TestCase):
             ## Serial assignation to all specific parts from part list, possible iteration logic needs to be done to go over each sub assembly part 
 
             for i in partList:
-                driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/assign_serial_number")
+                driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/assign_serial_number")
 
                 time.sleep(5)
                 pnfield = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div/input')
@@ -56,7 +56,7 @@ class TestAntCreation(unittest.TestCase):
                 time.sleep(2)
                 
             time.sleep(3)
-            driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/parent_serial_number")
+            driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
             time.sleep(3)
 
             print(serialList)
@@ -78,14 +78,14 @@ class TestAntCreation(unittest.TestCase):
                         parentButton = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[2]/div/button')
                         parentButton.click()
                         time.sleep(5)
-                        driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/parent_serial_number")
+                        driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/parent_serial_number")
                     except:
                         continue
 
 
             ## CheckList and Final attaching logic of the Subassembly to the Ant Can this be combined with the above step or should this be completed as a final sequence once 
             time.sleep(4)
-            driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#hierarchy".format(serialList[0]))
+            driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#hierarchy".format(serialList[0]))
                     
             time.sleep(3)
 
@@ -125,12 +125,12 @@ class TestAntCreation(unittest.TestCase):
             
 
         time.sleep(4)
-        driver.get("https://<company>-hivemind-test.example.com/commissioning/ants/{0}#comm".format(GUID))
+        driver.get("https://robotinc-roboticserp-test.example.com/commissioning/ants/{0}#comm".format(GUID))
         time.sleep(3)
         markInComission = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[1]/div[2]/div/button[4]')
         markInComission.click()            
         time.sleep(3)
-        driver.get("https://<company>-hivemind-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
+        driver.get("https://robotinc-roboticserp-test.example.com/manufacturing/assemblies/{0}#heirarchy".format(GUID))
         time.sleep(3)
         serialzerovalidation = driver.find_element(by=By.XPATH, value='//*[@id="application"]/div[3]/div/div[1]/div/div/div[1]/div[2]/div[2]/div[1]/div[2]/div')
         print(serialzerovalidation.text[:1])
