@@ -3,7 +3,7 @@
 A collection of advanced Selenium WebDriver automation scripts demonstrating real-world test automation capabilities.
 
 > **Sanitized for Public Viewing**  
-> All internal URLs, company names (Hivemind → RoboticsERP, Attabotics → RobotINC), project identifiers, and sensitive details have been replaced with placeholders or rebranded.
+> All internal URLs, project identifiers, and sensitive details have been replaced with placeholders or rebranded.
 
 ### Skills Demonstrated
 
